@@ -72,13 +72,14 @@ def handle_client(conn, addr):
         msg_length = len(msg_)
         if msg_length > 0:
             msg = msg_
-            msg_data = msg.split("#")[1]
-            print(msg)
-            print(msg_data)
+            try:
+                msg_data = msg.split("#")[1]
+            except IndexError:
+                msg_data = ""
             if msg == DISCONNECT_MESSAGE:
                 connected = False
             if log_msg:
-                print(f"[MSG-{addr}] {msg} - {msg_data}")
+                print(f"[MSG-{addr}] {msg.split('#')[0]} - {msg_data}")
             
             if msg in message_callbacks:
                 message_callbacks[msg](addr, msg, conn, msg_data)
