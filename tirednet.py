@@ -8,6 +8,7 @@ log_new_connection = False
 log_connection_ammount = False
 
 message_callbacks = {}
+client_message_listeners = {}
 
 def init(localhost=True):
     global SERVER, ADDR, FORMAT, DISCONNECT_MESSAGE, PORT, server, msg
@@ -40,9 +41,21 @@ class Client():
         self.client.connect(self.ADDR)
     
     def send(self, msg):
-        # msg_bytes = msg.encode(self.FORMAT)
         self.client.send(bytes(msg, self.FORMAT))
         return self.client.recv(2048).decode(self.FORMAT)
+    
+#     def add_message_listener(self, message, callback, client):
+#         global client_message_listeners
+#         client_message_listeners[message] = callback
+#         thread = threading.Thread(target=client_message_listener, args=(client))
+#         thread.start()
+
+# def client_message_listener(client):
+#     global client_message_listeners
+#     while True:
+#         msg = client.client.recv(2048).decode(client.FORMAT)
+#         if msg in client_message_listeners:
+#             client_message_listeners[msg](msg)
 
 def add_message_callback(message, callback):
     global message_callbacks
@@ -59,13 +72,16 @@ def handle_client(conn, addr):
         msg_length = len(msg_)
         if msg_length > 0:
             msg = msg_
+            msg_data = msg.split("#")[1]
+            print(msg)
+            print(msg_data)
             if msg == DISCONNECT_MESSAGE:
                 connected = False
             if log_msg:
-                print(f"[MSG-{addr}] {msg}")
+                print(f"[MSG-{addr}] {msg} - {msg_data}")
             
             if msg in message_callbacks:
-                message_callbacks[msg](addr, msg, conn)
+                message_callbacks[msg](addr, msg, conn, msg_data)
 
             conn.send("&MSG-RECIEVED".encode(FORMAT))
     
