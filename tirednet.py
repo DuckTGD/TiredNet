@@ -83,8 +83,6 @@ def handle_client(conn, addr):
             
             if msg in message_callbacks:
                 message_callbacks[msg](addr, msg, conn, msg_data)
-
-            conn.send("&MSG-RECIEVED".encode(FORMAT))
     
     conn.close()
 
