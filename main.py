@@ -9,7 +9,7 @@ tirednet.log_msg = True
 def callback_test(addr, msg, conn, data):
     print(msg + " - " + data)
 
-    conn.send("&MSG-RECIEVED".encode(tirednet.FORMAT))
+    return tirednet.formated("&TEST-RESPONSE", tirednet.FORMAT)
 
 tirednet.add_message_callback("CALLBACK_TEST", callback_test)
 

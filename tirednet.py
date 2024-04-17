@@ -10,6 +10,9 @@ log_connection_ammount = False
 message_callbacks = {}
 client_message_listeners = {}
 
+def formated(text, format):
+    return text.encode(format)
+
 def init(localhost=True):
     global SERVER, ADDR, FORMAT, DISCONNECT_MESSAGE, PORT, server, msg
     print("[INIT] Initializing...")
@@ -82,7 +85,11 @@ def handle_client(conn, addr):
                 print(f"[MSG-{addr}] {msg.split('#')[0]} - {msg_data}")
             
             if msg in message_callbacks:
-                message_callbacks[msg](addr, msg, conn, msg_data)
+                server_wants_response = message_callbacks[msg](addr, msg, conn, msg_data)
+                if server_wants_response:
+                    conn.send(server_wants_response)
+                else:
+                    conn.send(formated("OK", FORMAT))
     
     conn.close()
 
