@@ -13,6 +13,8 @@ client_message_listeners = {}
 def formated(text, format):
     return text.encode(format)
 
+
+
 def init(localhost=True):
     global SERVER, ADDR, FORMAT, DISCONNECT_MESSAGE, PORT, server, msg
     print("[INIT] Initializing...")
@@ -30,18 +32,23 @@ def init(localhost=True):
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind(ADDR)
 
+def Empty():
+    pass
+
 class Client():
-    def __init__(self, server_, port_):
-        self.PORT = port_
-        self.SERVER = server_
+    def __init__(self, server, port):
+        self.PORT = port
+        self.SERVER = server
         self.FORMAT = 'utf-8'
         self.DISCONNECT_MESSAGE = "!DISCONNECT"
         self.ADDR = (self.SERVER, self.PORT)
+        self.connectedCallback = Empty
 
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     def connect(self):
         self.client.connect(self.ADDR)
+        self.connectedCallback()
     
     def send(self, msg):
         self.client.send(bytes(msg, self.FORMAT))
