@@ -19,4 +19,4 @@
 
 # Features
 
-- You can send events, and send responses from the events.
+- Events go vroom. Response say ok 👍
