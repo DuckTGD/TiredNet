@@ -46,19 +46,6 @@ class Client():
     def send(self, msg):
         self.client.send(bytes(msg, self.FORMAT))
         return self.client.recv(2048).decode(self.FORMAT)
-    
-#     def add_message_listener(self, message, callback, client):
-#         global client_message_listeners
-#         client_message_listeners[message] = callback
-#         thread = threading.Thread(target=client_message_listener, args=(client))
-#         thread.start()
-
-# def client_message_listener(client):
-#     global client_message_listeners
-#     while True:
-#         msg = client.client.recv(2048).decode(client.FORMAT)
-#         if msg in client_message_listeners:
-#             client_message_listeners[msg](msg)
 
 def add_message_callback(message, callback):
     global message_callbacks
