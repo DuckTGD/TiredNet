@@ -18,5 +18,5 @@ def callback_test(addr, msg, conn, data):
 # Add the test message callback.
 tirednet.add_message_callback("CALLBACK_TEST", callback_test)
 
-# Start the server.
+# Start the server
 tirednet.start()
