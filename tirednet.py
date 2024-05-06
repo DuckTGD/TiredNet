@@ -107,7 +107,7 @@ def handle_client(conn, addr):
         if msg_length > 0:
             msg = msg_
             try:
-                msg_data = msg.split("#")[1]
+                msg_data = msg.split("#", 1)[1]
             except IndexError:
                 msg_data = ""
             if msg == DISCONNECT_MESSAGE:
